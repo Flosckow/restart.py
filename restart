@@ -1,0 +1,58 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+ 
+import sys
+import os 
+import argparse
+
+os.environ["RC_IP"] = "192.168.0.160"
+os.environ["RC_PORT"] = "1521"
+os.environ["MAX_SESSION"] = "1"
+os.environ["SHIVA_LOG_PATH"] = "logs"
+os.environ["SHIVA_PORT"] = "8080"
+os.environ["SHIVA_HTTPS"] = "0"
+os.environ["LOGGING_PORT"] = "9020"
+
+
+def create_parser():
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers(dest='command')
+    start_parser = subparsers.add_parser('start')
+    stop_parser = subparsers.add_parser('stop')
+    restart_parser = subparsers.add_parser('restart')
+
+    return parser
+
+def start_project(namespace):
+    os.system("nohup python3 main.py > /dev/null 2>&1 &")
+    os.system("nohup python3 logger_server.py > /dev/null 2>&1 &")
+    print('Application starting')
+
+
+def stop_project(namespace):
+    os.system("pkill -f main.py")
+    os.system("pkill -f logger_server.py")
+    print('Application stopped')
+
+
+def restart_project(namespace):
+    os.system("pkill -f main.py")
+    os.system("pkill -f logger_server.py")
+
+    os.system("nohup python3 main.py > /dev/null 2>&1 &")
+    os.system("nohup python3 logger_server.py > /dev/null 2>&1 &")
+    print('Application will be restarted')
+
+
+
+if __name__ == '__main__':
+    parser = create_parser()
+    namespace = parser.parse_args(sys.argv[1:])
+    if namespace.command == 'start':
+        start_project(namespace)
+    if namespace.command == 'stop':
+        stop_project(namespace)
+    if namespace.command == 'restart':
+        restart_project(namespace)
+    else:
+        'Что-то пошло не так...'
