@@ -5,14 +5,6 @@ import sys
 import os 
 import argparse
 
-os.environ["RC_IP"] = "192.168.0.160"
-os.environ["RC_PORT"] = "1521"
-os.environ["MAX_SESSION"] = "1"
-os.environ["SHIVA_LOG_PATH"] = "logs"
-os.environ["SHIVA_PORT"] = "8080"
-os.environ["SHIVA_HTTPS"] = "0"
-os.environ["LOGGING_PORT"] = "9020"
-
 
 def create_parser():
     parser = argparse.ArgumentParser()
